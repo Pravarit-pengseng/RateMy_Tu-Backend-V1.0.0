@@ -7,8 +7,7 @@ const { currentUser } = require("../Controllers/auth");
 //middleware
 const { auth, adminCheck } = require("../Middleware/auth");
 
-//http://localhost:5000/api/course
-router.get("/course", list); //write ',auth'
+router.get("/course", list); 
 //one course
 router.get("/course/:id", read);
 router.post("/course", auth,adminCheck,currentUser, create);
