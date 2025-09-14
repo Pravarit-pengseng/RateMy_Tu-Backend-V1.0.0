@@ -33,7 +33,7 @@ exports.searchCourses = async (req, res) => {
       ],
     }).limit(5);
 
-    // ❌ ตัดเพิ่ม popularity ออกไป — จะไปทำตอนคลิกแทน
+
 
     // normalize popularity
     const maxPopularity = await Course.findOne().sort({ popularity: -1 });
