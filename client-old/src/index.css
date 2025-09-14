@@ -1,0 +1,51 @@
+/* font */
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
+
+
+html,
+body,
+#root,
+.app,
+.content {
+  height: 100%;
+  width: 100%;
+  font-family: "Source Sans Pro", sans-serif;
+  background-color:#ffffff;
+  overflow: hidden;
+}
+.content_body{
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  height:  100%;
+  overflow-y: scroll;
+
+}
+.app {
+  display: flex;
+  position: relative;
+}
+.menu-bars {
+  text-decoration: none;
+  /* color: #000; */
+  color: #ffffff;
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+
+::-webkit-scrollbar-track {
+  background: #2d2f3b;
+}
+
+
+::-webkit-scrollbar-thumb {
+  /* background: #888; */
+  background: #565b72;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  /* background: #555; */
+  background: #404455;
+}
