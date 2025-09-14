@@ -52,33 +52,3 @@ exports.remove = async (req, res) => {
   }
 };
 
-// const handleQuery = async (req, res, query) => {
-//   try {
-//     let course = await Course.find({ $text: { $search: query } });
-
-//     if (course.length === 0) {
-//       course = await Course.find({
-//         $or: [
-//           { code: { $regex: query, $options: "i" } },
-//           { name: { $regex: query, $options: "i" } },
-//           { teacher: { $regex: query, $options: "i" } },
-//         ],
-//       });
-//     }
-
-//     res.send(course);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send("Server Error");
-//   }
-// };
-
-
-// //search 
-// exports.searchFillters = async (req, res) => {
-//   const { query } = req.body;
-//   if (query) {
-//     console.log("query", query);
-//     await handleQuery(req, res, query);
-//   }
-// };

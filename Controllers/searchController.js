@@ -1,4 +1,3 @@
-// controllers/searchController.js
 const Course = require("../Models/Course");
 const SearchHistory = require("../Models/SearchHistory");
 

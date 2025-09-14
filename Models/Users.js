@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema(
   {
-    //user data structure
     studentId: String,
     username: String,
     password: {
