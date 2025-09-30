@@ -26,7 +26,7 @@ exports.searchCourses = async (req, res) => {
 
     let results = await Course.find({
       $or: [
-        { code: { $regex: query, $options: "i" } },
+        { courseCode: { $regex: query, $options: "i" } },
         { name: { $regex: query, $options: "i" } },
         { teacher: { $regex: query, $options: "i" } },
       ],

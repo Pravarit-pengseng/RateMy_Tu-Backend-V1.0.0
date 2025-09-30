@@ -11,8 +11,6 @@ const searchHistorySchema = new mongoose.Schema({
     default: Date.now,
     expires: 86400 // Expires after 1 day (24 * 60 * 60)
   }
-}, {
-  timestamps: false // We're using custom createdAt
 });
 
 // Index for better query performance

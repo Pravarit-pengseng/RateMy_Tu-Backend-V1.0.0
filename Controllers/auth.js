@@ -6,13 +6,22 @@ exports.register = async (req, res) => {
   try {
     //code
     // 1 checkUser
-    const { studentId, username, password } = req.body;
+    const {
+      studentId,
+      username,
+      password,
+      role,
+      gpa,
+      faculty,
+      major,
+      bio,
+      avatar,
+    } = req.body;
     var user = await User.findOne({ studentId });
 
     if (user) {
       return res.status(400).send("This student ID already Used!!");
     }
-
 
     // 2 Encrypt
     const salt = await bcrypt.genSalt(10);
@@ -25,7 +34,7 @@ exports.register = async (req, res) => {
     user.password = await bcrypt.hash(password, salt);
     // 3 save
     await user.save();
-    res.send("Register success!!");
+    res.status(201).send("Register success!!");
 
     // res.send(req.body);
   } catch (err) {
@@ -55,12 +64,17 @@ exports.login = async (req, res) => {
           studentId: user.studentId,
           username: user.username,
           role: user.role,
+          gpa:user.gpa,
+          faculty:user.faculty,
+          major:user.major,
+          bio:user.bio,
+          profileImg:user.profileImg
         },
       };
       // console.log("This is payload :", payload);
 
       //3generate token
-      jwt.sign(payload, "jwtsecret", { expiresIn: '1d' }, (err, token) => {
+      jwt.sign(payload, "jwtsecret", { expiresIn: "1d" }, (err, token) => {
         if (err) throw err;
 
         res.json({ token, payload });
@@ -76,7 +90,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.currentUser = async (req, res,next) => {
+exports.currentUser = async (req, res, next) => {
   try {
     //code
     // console.log("currentUser", req.user);
@@ -84,8 +98,9 @@ exports.currentUser = async (req, res,next) => {
       .select("-password")
       .exec();
     console.log("currentUser", req.user);
+    // res.send(req.user)
     next();
-    // res.send(user);
+    res.send(user);
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error.");
