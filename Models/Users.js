@@ -1,4 +1,4 @@
-      const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -10,7 +10,6 @@ const UserSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      // unique: true,
     },
     password: {
       type: String,
@@ -24,12 +23,16 @@ const UserSchema = new mongoose.Schema(
     gpa: {
       type: Number,
       set: (v) => parseFloat(parseFloat(v).toFixed(2)),
-      default: 0 // always store 2 decimals
+      default: 0
     },
-    faculty: { type: String,default:"" },
-    major: { type: String,default:"" },
-    bio: { type: String,default:"" },
-    profileImg: { type: String,default:"" },
+    faculty: { type: String, default: "" },
+    major: { type: String, default: "" },
+    bio: { type: String, default: "" },
+    profileImg: { type: String, default: "" },
+    // Visibility fields
+    visibilityGpa: { type: Boolean, default: true },
+    visibilityFaculty: { type: Boolean, default: true },
+    visibilityMajor: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
