@@ -11,10 +11,7 @@ const path = require("path");
 const app = express();
 
 connectDB();
-// Root route
-app.get("/", (req, res) => {
-  res.send("Backend is running");
-});
+
 
 app.use(morgan("dev"));
 app.use(cors());
