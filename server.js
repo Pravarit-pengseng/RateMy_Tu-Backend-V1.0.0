@@ -12,8 +12,8 @@ const app = express();
 connectDB();
 
 
-router.get("/", (req, res) => {
-  res.send("Users route");
+app.get("/", (req, res) => {
+  res.send("Backend is running");
 });
 
 app.use(morgan("dev"));
