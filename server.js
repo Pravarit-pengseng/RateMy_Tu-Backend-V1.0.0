@@ -4,14 +4,17 @@ const morgan = require("morgan");
 const cors = require("cors");
 const bodyParse = require("body-parser");
 const { readdirSync } = require("fs");
-const bodyParser = require("body-parser");
 const connectDB = require("./Config/db");
 const path = require("path");
-
+const router = express.Router();
 const app = express();
 
 connectDB();
 
+
+router.get("/", (req, res) => {
+  res.send("Users route");
+});
 
 app.use(morgan("dev"));
 app.use(cors());
