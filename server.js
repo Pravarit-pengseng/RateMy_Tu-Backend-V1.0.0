@@ -2,9 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const bodyParse = require("body-parser");
+// const bodyParser = require("body-parser");
 const { readdirSync } = require("fs");
-const bodyParser = require("body-parser");
 const connectDB = require("./Config/db");
 const path = require("path");
 
@@ -14,7 +13,9 @@ connectDB();
 
 app.use(morgan("dev"));
 app.use(cors());
-app.use(bodyParse.json({ limit: "10mb" }));
+// app.use(bodyParser.json({ limit: "10mb" }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true })); // เพิ่มบรรทัดนี้เผื่อไว้
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
