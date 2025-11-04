@@ -1,5 +1,5 @@
 const QuestionPost = require("../Models/QuestionPost");
-// ✅ Create question
+//  Create question
 exports.createQuestion = async (req, res) => {
   try {
     
@@ -15,28 +15,22 @@ exports.createQuestion = async (req, res) => {
   }
 };
 
-// ✅ Get all questions for a course
+//  Get all questions for a course
 exports.getCourseQuestions = async (req, res) => {
   try {
     const questions = await QuestionPost.find({
       courseCode: req.params.courseCode,
     })
-      // .populate("user", "username")
-      // .sort({ createdAt: -1 });
     res.json({ message: "Get all questions ", questions });
   } catch (err) {
     res.status(500).json({ error: "Cannot fetch questions" });
   }
 };
 
-// ✅ Get single question
+// Get single question
 exports.getQuestion = async (req, res) => {
   try {
     const question = await QuestionPost.findById(req.params.id)
-    // .populate(
-    //   "user",
-    //   "username"
-    // );
     if (!question) return res.status(404).json({ error: "Question not found" });
     res.json({ message: "Get one question ", question });
   } catch (err) {
@@ -44,7 +38,7 @@ exports.getQuestion = async (req, res) => {
   }
 };
 
-// ✅ Update question
+//  Update question
 exports.updateQuestion = async (req, res) => {
   try {
     const updated = await QuestionPost.findOneAndUpdate(

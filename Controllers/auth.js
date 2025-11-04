@@ -10,12 +10,6 @@ exports.register = async (req, res) => {
       studentId,
       username,
       password,
-      role,
-      gpa,
-      faculty,
-      major,
-      bio,
-      avatar,
     } = req.body;
     var user = await User.findOne({ studentId });
 
@@ -68,7 +62,7 @@ exports.login = async (req, res) => {
           faculty:user.faculty,
           major:user.major,
           bio:user.bio,
-          profileImg:user.profileImg
+          profileImage:user.profileImage
         },
       };
       // console.log("This is payload :", payload);

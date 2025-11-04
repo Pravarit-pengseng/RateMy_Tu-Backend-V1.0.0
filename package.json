@@ -21,6 +21,7 @@
     "call-bind-apply-helpers": "^1.0.2",
     "call-bound": "^1.0.4",
     "chokidar": "^3.6.0",
+    "cloudinary": "^2.7.0",
     "combined-stream": "^1.0.8",
     "concat-map": "^0.0.1",
     "content-disposition": "^1.0.0",

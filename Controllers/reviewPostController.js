@@ -26,7 +26,7 @@ exports.getCourseReviews = async (req, res) => {
   try {
     const { courseCode } = req.params;
 
-    const reviews = await Review.find({ courseCode: courseCode }) // optional: include course details
+    const reviews = await Review.find({ courseCode: courseCode }) 
       .sort({ createdAt: -1 });
 
     if (!reviews || reviews.length === 0) {
