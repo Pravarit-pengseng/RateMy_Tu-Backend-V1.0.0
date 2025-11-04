@@ -23,12 +23,25 @@ const UserSchema = new mongoose.Schema(
     gpa: {
       type: Number,
       set: (v) => parseFloat(parseFloat(v).toFixed(2)),
-      default: 0
+      default: 0,
     },
     faculty: { type: String, default: "" },
     major: { type: String, default: "" },
     bio: { type: String, default: "" },
-    profileImg: { type: String, default: "" },
+    profileImage: {
+      url: {
+        type: String,
+        default: "", // หรือใส่ URL รูป default ของคุณ
+      },
+      publicId: {
+        type: String,
+        default: null,
+      },
+    },
+    // createdAt: {
+    //   type: Date,
+    //   default: Date.now
+    // },
     // Visibility fields
     visibilityGpa: { type: Boolean, default: true },
     visibilityFaculty: { type: Boolean, default: true },
