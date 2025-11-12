@@ -25,7 +25,7 @@ router.get('/profile/:username', async (req, res) => {
 
     // หา user
     const user = await User.findOne({ username: username })
-      .select('username profileImage email createdAt');
+      .select('username gpa major faculty bio visibilityGpa visibilityFaculty visibilityMajor profileImage email createdAt');
 
     if (!user) {
       return res.status(404).json({
@@ -38,6 +38,13 @@ router.get('/profile/:username', async (req, res) => {
     res.status(200).json({
       success: true,
       username: user.username,
+      gpa: user.gpa || 0,
+      major: user.major || "",
+      faculty: user.faculty || "",
+      bio: user.bio || "",
+      visibilityGpa: user.visibilityGpa ?? true,
+      visibilityFaculty: user.visibilityFaculty ?? true,
+      visibilityMajor: user.visibilityMajor ?? true,
       profileImage: user.profileImage?.url || null, // ⭐ แก้ตรงนี้ - ใช้ .url เพราะ profileImage เป็น object
       email: user.email,
       createdAt: user.createdAt

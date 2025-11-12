@@ -1,11 +1,24 @@
 const Course = require("../Models/Course");
+
 exports.read = async (req, res) => {
   try {
-    const id = req.params.id;
-    const course = await Course.findOne({ _id: id }).exec();
+    const identifier = req.params.id;
+    
+
+    let course = await Course.findOne({ courseCode: identifier }).exec();
+    
+
+    if (!course) {
+      course = await Course.findOne({ _id: identifier }).exec();
+    }
+    
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    
     res.send(course);
   } catch (err) {
-    console.log(err);
+    console.log("getCourse Error:", err);
     res.status(500).send("server Error");
   }
 };
@@ -19,6 +32,7 @@ exports.list = async (req, res) => {
     res.status(500).send("server Error");
   }
 };
+
 exports.create = async (req, res) => {
   try {
     console.log(req.body);
@@ -29,6 +43,7 @@ exports.create = async (req, res) => {
     res.status(500).send("server Error");
   }
 };
+
 exports.update = async (req, res) => {
   try {
     const id = req.params.id;
@@ -41,6 +56,7 @@ exports.update = async (req, res) => {
     res.status(500).send("server Error");
   }
 };
+
 exports.remove = async (req, res) => {
   try {
     const id = req.params.id;
@@ -51,4 +67,3 @@ exports.remove = async (req, res) => {
     res.status(500).send("server Error");
   }
 };
-

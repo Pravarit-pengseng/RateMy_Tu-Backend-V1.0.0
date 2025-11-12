@@ -19,8 +19,6 @@ exports.createComment = async (req, res) => {
 exports.getComments = async (req, res) => {
   try {
     const comments = await QuestionComment.find({ questionPost: req.params.questionId })
-      // .populate("user", "username")
-      // .sort({ createdAt: -1 });
     res.json({text:"Get all  comments succesful!",comments});
   } catch (err) {
     res.status(500).json({ error: "Cannot fetch comments" });
@@ -31,7 +29,6 @@ exports.getComments = async (req, res) => {
 exports.getComment = async (req, res) => {
   try {
     const comment = await QuestionComment.findById(req.params.id)
-    // .populate("user", "username");
     if (!comment) return res.status(404).json({ error: "Comment not found" });
     res.json({text:"Get the comment succesful!",comment});
   } catch (err) {

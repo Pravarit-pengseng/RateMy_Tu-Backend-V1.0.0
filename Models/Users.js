@@ -38,10 +38,10 @@ const UserSchema = new mongoose.Schema(
         default: null,
       },
     },
-    // createdAt: {
-    //   type: Date,
-    //   default: Date.now
-    // },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
     // Visibility fields
     visibilityGpa: { type: Boolean, default: true },
     visibilityFaculty: { type: Boolean, default: true },

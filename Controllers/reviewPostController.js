@@ -1,5 +1,6 @@
 const Review = require("../Models/ReviewPost");
 const Course = require("../Models/Course");
+const Comment = require("../Models/CommentReview")
 
 // Create review
 exports.createReview = async (req, res) => {
@@ -26,7 +27,7 @@ exports.getCourseReviews = async (req, res) => {
   try {
     const { courseCode } = req.params;
 
-    const reviews = await Review.find({ courseCode: courseCode }) 
+    const reviews = await Review.find({ courseCode: courseCode })
       .sort({ createdAt: -1 });
 
     if (!reviews || reviews.length === 0) {
@@ -83,6 +84,9 @@ exports.deleteReview = async (req, res) => {
 
     if (!removed)
       return res.status(404).json({ error: "Review not found or not yours" });
+
+    // 🎯 เพิ่ม: ลบคอมเมนต์ทั้งหมดที่ผูกกับ Review นี้
+    await Comment.deleteMany({ review_id: removed._id });
 
     //  Update avg score after deleting review
     await Course.updateAvgScore(removed.courseCode);

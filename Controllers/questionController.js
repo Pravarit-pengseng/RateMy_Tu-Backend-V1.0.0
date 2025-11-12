@@ -1,8 +1,9 @@
 const QuestionPost = require("../Models/QuestionPost");
-//  Create question
+const QuestionComment = require("../Models/QuestionComment")
+
 exports.createQuestion = async (req, res) => {
   try {
-    
+
     const newQuestion = new QuestionPost({
       courseCode: req.params.courseCode,
       username: req.user.username,
@@ -15,7 +16,7 @@ exports.createQuestion = async (req, res) => {
   }
 };
 
-//  Get all questions for a course
+
 exports.getCourseQuestions = async (req, res) => {
   try {
     const questions = await QuestionPost.find({
@@ -27,7 +28,7 @@ exports.getCourseQuestions = async (req, res) => {
   }
 };
 
-// Get single question
+
 exports.getQuestion = async (req, res) => {
   try {
     const question = await QuestionPost.findById(req.params.id)
@@ -38,11 +39,11 @@ exports.getQuestion = async (req, res) => {
   }
 };
 
-//  Update question
+
 exports.updateQuestion = async (req, res) => {
   try {
     const updated = await QuestionPost.findOneAndUpdate(
-      { _id: req.params.id, user: req.user._id }, // only owner can edit
+      { _id: req.params.id, user: req.user._id }, 
       { questionText: req.body.questionText },
       { new: true }
     );
@@ -55,17 +56,38 @@ exports.updateQuestion = async (req, res) => {
   }
 };
 
-// ✅ Delete question
 exports.deleteQuestion = async (req, res) => {
   try {
-    const removed = await QuestionPost.findOneAndDelete({
-      _id: req.params.id,
-      username: req.user.username,
+    const questionId = req.params.id;
+    const currentUser = req.user;
+
+    const question = await QuestionPost.findById(questionId);
+
+    if (!question) {
+      return res.status(404).json({ error: "Question not found" });
+    }
+
+    const isOwner = question.username === currentUser.username;
+    const isAdmin = currentUser.role === 'admin' || currentUser.isAdmin === true;
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({
+        error: "You don't have permission to delete this question"
+      });
+    }
+
+
+    await QuestionPost.findByIdAndDelete(questionId);
+
+    await QuestionComment.deleteMany({ questionPost: questionId });
+
+    res.json({
+      message: "Question deleted successfully",
+      deletedBy: isAdmin ? "admin" : "owner"
     });
-    if (!removed)
-      return res.status(404).json({ error: "Question not found or not yours" });
-    res.json({ message: "Question deleted", removed });
+
   } catch (err) {
+    console.error("Delete question error:", err);
     res.status(500).json({ error: "Cannot delete question" });
   }
 };

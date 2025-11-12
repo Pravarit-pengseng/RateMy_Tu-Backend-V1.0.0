@@ -4,9 +4,7 @@ const reviewPostSubtSchema = new mongoose.Schema(
   {
     courseCode: { type: String, text: true }, // รหัสวิชา
     username: { type: String, text: true }, // ชื่อบัญชีผู้ใช้
-    // teacher: { type: mongoose.Schema.Types.String, ref: "Course"}, // ชื่ออาจารย์
     postText: { type: String, text: true },
-    // ratingScore: { type: Number, required: true, min: 1, max: 5 }, // คะแนนรีวิว (หลัก)
     section: { type: String, text: true }, // เซค
     semester: { type: String, text: true }, // ภาคเรียน
     academicYear: { type: String, text: true }, // ปีการศึกษา
@@ -14,12 +12,24 @@ const reviewPostSubtSchema = new mongoose.Schema(
 
     // คะแนนย่อย
     starRating: { type: Number, min: 1, max: 5 }, // คะแนนรูปแบบดาว
-    homeworkScore: { type: Number, min: 1, max: 100, default :0 }, // คะแนนของงานบ้านการบ้าน
-    interestScore: { type: Number, min: 1, max: 100, default :0 }, // คะแนนของความน่าสนใจ
-    teachingScore: { type: Number, min: 1, max: 100, default :0 }, // คะแนนการสอนของอาจารย์
+    homeworkScore: { type: Number, min: 1, max: 100, default: 0 },
+    interestScore: { type: Number, min: 1, max: 100, default: 0 },
+    teachingScore: { type: Number, min: 1, max: 100, default: 0 },
+    gradeDistribution: { type: String, default: "" },
+    gradecut: { type: String, text: true },
 
-    like: { type: Number, default: 0 }, // ชอบ
-    disLike: { type: Number, default: 0 }, // ไม่ชอบ
+    like: { type: Number, default: 0 }, // จำนวนคนที่ชอบ
+    disLike: { type: Number, default: 0 }, // จำนวนคนที่ไม่ชอบ
+
+    // ⭐ เพิ่มใหม่: เก็บ username ของคนที่กด like/dislike
+    likedBy: {
+      type: [String],
+      default: []
+    }, // array ของ username ที่กด like
+    dislikedBy: {
+      type: [String],
+      default: []
+    }, // array ของ username ที่กด dislike
   },
   { timestamps: true }
 );
