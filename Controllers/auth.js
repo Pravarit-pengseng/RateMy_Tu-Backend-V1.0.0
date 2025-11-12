@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
 
       if (!isMatch) {
         // return res.json({ status: "Password  invalid!!" }).status(400);
-        return res.status(400).send("รหัสผ่านผิด");
+        return res.status(400).send("รหัสผ่านไม่ถูกต้อง");
       }
 
       //2 Payload
