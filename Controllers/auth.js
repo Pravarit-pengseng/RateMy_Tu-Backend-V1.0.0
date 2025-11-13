@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
     user.password = await bcrypt.hash(password, salt);
     // 3 save
     await user.save();
-    res.status(200).send("เข้าสู่ระบบสำเร็จ");
+    res.status(200).send("ลงทะเบียนสำเร็จ");
 
     // res.send(req.body);
   } catch (err) {
