@@ -6,14 +6,17 @@ exports.register = async (req, res) => {
   try {
     //code
     // 1 checkUser
-    const { studentId, username, password } = req.body;
+    const {
+      studentId,
+      username,
+      password,
+    } = req.body;
     var user = await User.findOne({ studentId });
     var Username = await User.findOne({ username });
 
     if (Username) {
       return res.status(400).send("ชื่อผู้ใช้นี้ได้ถูกใช้ไปแล้ว");
     }
-
     if (user) {
       return res.status(400).send("รหัสนักศึกษานี้ได้ถูกใช้ไปแล้ว");
     }
@@ -29,12 +32,12 @@ exports.register = async (req, res) => {
     user.password = await bcrypt.hash(password, salt);
     // 3 save
     await user.save();
-    res.status(200).send("ลงทะเบียนสำเร็จ");
+    res.status(201).send("ลงทะเบียนสำเร็จ");
 
     // res.send(req.body);
   } catch (err) {
     console.log(err);
-    res.status(500).send("Sever error!!", err);
+    res.status(500).send("Sever error!!");
   }
 };
 
@@ -63,13 +66,13 @@ exports.login = async (req, res) => {
           faculty: user.faculty,
           major: user.major,
           bio: user.bio,
-          profileImage: user.profileImage,
+          profileImage: user.profileImage
         },
       };
       // console.log("This is payload :", payload);
 
       //3generate token
-      jwt.sign(payload, "jwtsecret", { expiresIn: "1d" }, (err, token) => {
+      jwt.sign(payload, "jwtsecret", { expiresIn: "7d" }, (err, token) => {
         if (err) throw err;
 
         res.json({ token, payload });

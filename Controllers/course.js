@@ -4,10 +4,10 @@ exports.read = async (req, res) => {
   try {
     const identifier = req.params.id;
     
-
+    // ⭐ พยายามหาด้วย courseCode ก่อน แล้วค่อย _id
     let course = await Course.findOne({ courseCode: identifier }).exec();
     
-
+    // ถ้าไม่เจอ ลองหาด้วย _id
     if (!course) {
       course = await Course.findOne({ _id: identifier }).exec();
     }
@@ -18,7 +18,7 @@ exports.read = async (req, res) => {
     
     res.send(course);
   } catch (err) {
-    console.log("getCourse Error:", err);
+    console.log("❌ [getCourse] Error:", err);
     res.status(500).send("server Error");
   }
 };

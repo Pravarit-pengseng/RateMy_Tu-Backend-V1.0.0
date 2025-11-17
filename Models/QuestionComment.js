@@ -8,6 +8,7 @@ const questionCommentSchema = new mongoose.Schema(
       required: true,
     }, // FK to QuestionPost
     username: { type: String, text: true }, // FK to User
+    studentId: { type: String, required: true, index: true },
     commentText: { type: String, required: true },
   },
   { timestamps: true }

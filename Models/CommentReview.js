@@ -12,6 +12,11 @@ const commentSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    studentId: {
+      type: String,
+      required: true,
+      index: true
+    },
     text: {
       type: String,
       required: true,

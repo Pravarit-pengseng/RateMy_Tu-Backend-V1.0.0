@@ -1,6 +1,6 @@
 const Review = require("../Models/ReviewPost");
 const Course = require("../Models/Course");
-const Comment = require("../Models/CommentReview")
+const Comment = require("../Models/CommentReview");
 
 // Create review
 exports.createReview = async (req, res) => {
@@ -9,15 +9,17 @@ exports.createReview = async (req, res) => {
     const review = new Review({
       ...req.body,
       username: req.user.username,
+      studentId: req.user.studentId, // ⭐ เพิ่ม studentId
       courseCode: courseCode,
     });
     const saved = await review.save();
-    //  Update avg score after adding review
+    
+    // Update avg score after adding review
     await Course.updateAvgScore(saved.courseCode);
 
     res.status(201).json(saved);
   } catch (err) {
-    console.error("ERROR:", err);
+    console.error("Create review error:", err);
     res.status(500).json({ error: "Cannot create review" });
   }
 };
@@ -56,20 +58,35 @@ exports.getReview = async (req, res) => {
 // Update review
 exports.updateReview = async (req, res) => {
   try {
-    const updated = await Review.findOneAndUpdate(
-      { _id: req.params.postId, user: req.user._id },
+    const currentUser = req.user;
+    const review = await Review.findById(req.params.postId);
+
+    if (!review) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    // ⭐ เช็คด้วย studentId แทน username
+    const isOwner = review.studentId === currentUser.studentId;
+    const isAdmin = currentUser.role === 'admin' || currentUser.isAdmin === true;
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({
+        error: "You don't have permission to update this review"
+      });
+    }
+
+    const updated = await Review.findByIdAndUpdate(
+      req.params.postId,
       req.body,
       { new: true }
     );
 
-    if (!updated)
-      return res.status(404).json({ error: "Review not found or not yours" });
-
-    //  Update avg score after editing review
+    // Update avg score after editing review
     await Course.updateAvgScore(updated.courseCode);
 
     res.json(updated);
   } catch (err) {
+    console.error("Update review error:", err);
     res.status(500).json({ error: "Cannot update review" });
   }
 };
@@ -77,22 +94,37 @@ exports.updateReview = async (req, res) => {
 // Delete review
 exports.deleteReview = async (req, res) => {
   try {
-    const removed = await Review.findOneAndDelete({
-      _id: req.params.postId,
-      user: req.user._id,
+    const currentUser = req.user;
+    const review = await Review.findById(req.params.postId);
+
+    if (!review) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    // ⭐ เช็คด้วย studentId แทน username
+    const isOwner = review.studentId === currentUser.studentId;
+    const isAdmin = currentUser.role === 'admin' || currentUser.isAdmin === true;
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({
+        error: "You don't have permission to delete this review"
+      });
+    }
+
+    await Review.findByIdAndDelete(req.params.postId);
+
+    // ลบ comments ทั้งหมดที่ผูกกับ Review นี้
+    await Comment.deleteMany({ review_id: review._id });
+
+    // Update avg score after deleting review
+    await Course.updateAvgScore(review.courseCode);
+
+    res.json({
+      message: "Review deleted",
+      deletedBy: isAdmin ? "admin" : "owner"
     });
-
-    if (!removed)
-      return res.status(404).json({ error: "Review not found or not yours" });
-
-    // 🎯 เพิ่ม: ลบคอมเมนต์ทั้งหมดที่ผูกกับ Review นี้
-    await Comment.deleteMany({ review_id: removed._id });
-
-    //  Update avg score after deleting review
-    await Course.updateAvgScore(removed.courseCode);
-
-    res.json({ message: "Review deleted", removed });
   } catch (err) {
+    console.error("Delete review error:", err);
     res.status(500).json({ error: "Cannot delete review" });
   }
 };

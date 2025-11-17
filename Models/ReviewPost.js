@@ -4,6 +4,7 @@ const reviewPostSubtSchema = new mongoose.Schema(
   {
     courseCode: { type: String, text: true }, // รหัสวิชา
     username: { type: String, text: true }, // ชื่อบัญชีผู้ใช้
+    studentId: { type: String, required: true, index: true },
     postText: { type: String, text: true },
     section: { type: String, text: true }, // เซค
     semester: { type: String, text: true }, // ภาคเรียน
